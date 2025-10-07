@@ -15,13 +15,13 @@
 
 ## 🛠️ Instalacja i Uruchomienie
 
-dotnet restore
+dotnet restore IndustrialPanel.csproj
 
 # Zbuduj projekt
-dotnet build
+dotnet build IndustrialPanel.csproj
 
 # Uruchom aplikację
-dotnet run
+dotnet run IndustrialPanel.csproj
 
 ## 🔐 Dane Logowania
 
