@@ -1,0 +1,325 @@
+<Window xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:IndustrialPanel.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
+    x:Class="IndustrialPanel.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+    Title="Panel Przemysłowy - System Zarządzania"
+    Width="1400" Height="900"
+    WindowStartupLocation="CenterScreen"
+    SystemDecorations="BorderOnly"
+    ExtendClientAreaToDecorationsHint="True"
+    ExtendClientAreaChromeHints="NoChrome"
+    TransparencyLevelHint="Transparent"
+    ExtendClientAreaTitleBarHeightHint="80">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+    <Border Grid.Row="0" Background="#6A1B9A"
+                BoxShadow="0 2 8 0 #33000000">
+            <Grid Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
+                    <TextBlock Text="Panel Przemysłowy"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="White"/>
+                    <TextBlock Text="System zarządzania taśmami"
+                               FontSize="11"
+                               Foreground="#E1BEE7"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+            <Border Background="#8E24AA" 
+                            CornerRadius="20" 
+                            Padding="15,8"
+                            Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="👤" FontSize="16" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBlock Text="{Binding CurrentUserName}" 
+                        Foreground="White" 
+                                       FontSize="13"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+            <Button Command="{Binding LogoutCommand}"
+                Padding="15,8"
+                MinWidth="110"
+                Height="36"
+                Background="#D32F2F"
+                Foreground="#FFFFFF">
+                <TextBlock Text="🚪 Wyloguj" 
+                           Foreground="#FFFFFF"
+                           FontSize="13"/>
+            </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="{StaticResource CardBrush}" Padding="16" CornerRadius="10" Margin="10" BoxShadow="0 2 8 0 #1A000000">
+                <StackPanel>
+                    <TextBlock Text="MENU" FontWeight="Bold" FontSize="12" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,12" LetterSpacing="1"/>
+                    <ListBox Name="NavList" SelectedIndex="0" Background="Transparent" BorderThickness="0">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="Padding" Value="12,10"/>
+                                <Setter Property="CornerRadius" Value="6"/>
+                                <Setter Property="Margin" Value="0,2"/>
+                            </Style>
+                            <Style Selector="ListBoxItem:selected">
+                                <Setter Property="Background" Value="{StaticResource Primary500Brush}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Style>
+                            <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                                <Setter Property="Background" Value="{StaticResource Primary500Brush}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Style>
+                            <Style Selector="ListBoxItem:selected TextBlock">
+                                <Setter Property="Foreground" Value="White"/>
+                            </Style>
+                            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+                                <Setter Property="Background" Value="{StaticResource Primary100Brush}"/>
+                            </Style>
+                        </ListBox.Styles>
+                        <ListBoxItem Content="Panel"/>
+                        <ListBoxItem Content="Raporty"/>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+
+            <ContentControl Grid.Column="1" Margin="0,10,10,10">
+                <ContentControl.Styles>
+                    <Style Selector="ListBox">
+                        <Setter Property="Background" Value="Transparent"/>
+                    </Style>
+                </ContentControl.Styles>
+                <Panel>
+                    <ScrollViewer IsVisible="{Binding ElementName=NavList, Path=SelectedIndex, Converter={x:Static vm:EqualsConverter.Instance}, ConverterParameter=0}">
+                    <ScrollViewer.Background>
+                        <LinearGradientBrush StartPoint="0%,100%" EndPoint="0%,0%">
+                            <GradientStop Color="#FFFFFF" Offset="0"/>
+                            <GradientStop Color="{StaticResource Primary50Color}" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ScrollViewer.Background>
+                    <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" 
+            Background="{StaticResource CardBrush}" 
+                        CornerRadius="10" 
+                        Padding="20"
+                        BoxShadow="0 2 8 0 #1A000000">
+                    <StackPanel>
+                        <TextBlock Text="Status urządzeń"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   Margin="0,0,0,15"/>
+                        
+                        <ItemsControl ItemsSource="{Binding CurrentDevices}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="3" HorizontalAlignment="Stretch"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                    <Border Background="{StaticResource CardAltBrush}" 
+                                            CornerRadius="8" 
+                                            Padding="15"
+                                            Margin="5"
+                        Cursor="Hand"
+                        Tag="{Binding DeviceId}"
+                        PointerReleased="DeviceCard_PointerReleased">
+                                        <Border.Styles>
+                                            <Style Selector="Border:pointerover">
+                        <Setter Property="Background" Value="{StaticResource CardHoverBrush}"/>
+                                            </Style>
+                                        </Border.Styles>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding DeviceName}" 
+                                                       FontSize="15" 
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{StaticResource Primary800Brush}"/>
+                                            <TextBlock Text="{Binding DeviceId}" 
+                                                       FontSize="11" 
+                                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                                       Margin="0,2,0,10"/>
+                                            
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Text="Prędkość" 
+                                                               FontSize="11" 
+                                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding SpeedMetersPerSecond}" 
+                                                                   FontSize="18" 
+                                                                   FontWeight="Bold"
+                                                                   Foreground="{StaticResource Primary700Brush}"/>
+                                                        <TextBlock Text=" m/s" 
+                                                                   FontSize="11" 
+                                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                                   VerticalAlignment="Bottom"
+                                                                   Margin="2,0,0,2"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                
+                                                <StackPanel Grid.Column="1">
+                                                    <TextBlock Text="Przepustowość" 
+                                                               FontSize="11" 
+                                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding TonsPerHour}" 
+                                                                   FontSize="18" 
+                                                                   FontWeight="Bold"
+                                                                   Foreground="{StaticResource Primary500Brush}"/>
+                                                        <TextBlock Text=" t/h" 
+                                                                   FontSize="11" 
+                                                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                                                   VerticalAlignment="Bottom"
+                                                                   Margin="2,0,0,2"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Grid>
+                                            
+                                            <Border Background="{Binding Status, Converter={x:Static vm:StatusColorConverter.Instance}}"
+                                                    CornerRadius="4"
+                                                    Padding="8,4"
+                                                    Margin="0,10,0,0">
+                                                <TextBlock Text="{Binding Status}" 
+                                                           FontSize="12"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="White"
+                                                           HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                
+
+                <StackPanel Grid.Row="4" Orientation="Vertical" Margin="0,20,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20" Spacing="14">
+            <Button Classes="primary" Command="{Binding ToggleRealTimeCommand}"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                Content="Wstrzymaj"/>
+
+            <Button Name="ExportButton" Classes="primary"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                IsEnabled="{Binding !IsExporting}"
+                Content="Pobierz raport"/>
+
+            <Button Classes="danger"
+                Command="{Binding CancelExportCommand}"
+                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                IsVisible="{Binding IsExporting}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
+                                <TextBlock Text="✖" FontSize="16" VerticalAlignment="Center"/>
+                                <TextBlock Text="Anuluj" FontSize="13"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Background="#FFFFFF" Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="Prędkość taśmy" FontSize="16" FontWeight="SemiBold" Foreground="#333333" Margin="0,0,0,15"/>
+                                <lvc:CartesianChart Name="SpeedChart" Series="{Binding SpeedSeries}" XAxes="{Binding XAxes}" YAxes="{Binding SpeedYAxes}" LegendPosition="Top" Height="300"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="2" Background="#FFFFFF" Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="Przepustowość" FontSize="16" FontWeight="SemiBold" Foreground="#333333" Margin="0,0,0,15"/>
+                                <lvc:CartesianChart Name="ThroughputChart" Series="{Binding ThroughputSeries}" XAxes="{Binding XAxes}" YAxes="{Binding ThroughputYAxes}" LegendPosition="Top" Height="300"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+                    </Grid>
+                    </ScrollViewer>
+                    <Grid Margin="20" IsVisible="{Binding ElementName=NavList, Path=SelectedIndex, Converter={x:Static vm:EqualsConverter.Instance}, ConverterParameter=1}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Raporty" FontSize="18" FontWeight="Bold"/>
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10" Margin="0,10,0,10">
+                            <Button Classes="primary" Name="ExportButtonPanel" Content="Pobierz raport"/>
+                            <TextBlock Text="Raport zawiera dane historyczne i statystyki dla wybranego urządzenia." Foreground="{StaticResource TextSecondaryBrush}"/>
+                        </StackPanel>
+                        <Border Grid.Row="2" Background="{StaticResource CardBrush}" CornerRadius="10" Padding="12" BoxShadow="0 2 8 0 #1A000000">
+                            <StackPanel>
+                                <TextBlock Text="Historia pobranych" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                                <ItemsControl ItemsSource="{Binding ReportHistory}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding FileName}"/>
+                                                    <TextBlock Text="{Binding CreatedAt, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                                                    <Button Classes="primary" Content="Otwórz" Tag="{Binding FullPath}" Padding="8,4" FontSize="12"/>
+                                                    <Button Classes="primary" Content="Pokaż w Finder" Tag="{Binding FullPath}" Padding="8,4" FontSize="12"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Panel>
+            </ContentControl>
+        </Grid>
+    </Grid>
+</Window>

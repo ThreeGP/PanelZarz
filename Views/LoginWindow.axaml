@@ -1,0 +1,122 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:IndustrialPanel.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="400"
+        x:Class="IndustrialPanel.Views.LoginWindow"
+        x:DataType="vm:LoginViewModel"
+    Title="Panel Przemysłowy - Logowanie"
+    Width="640" Height="480"
+        WindowStartupLocation="CenterScreen"
+        CanResize="False"
+    Icon="/Assets/avalonia-logo.ico"
+    SystemDecorations="BorderOnly"
+    ExtendClientAreaToDecorationsHint="True"
+    ExtendClientAreaChromeHints="NoChrome"
+    TransparencyLevelHint="Transparent">
+
+    <Design.DataContext>
+        <vm:LoginViewModel/>
+    </Design.DataContext>
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                <GradientStop Color="#FFFFFF" Offset="0"/>
+                <GradientStop Color="{StaticResource Primary50Color}" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+    <Border Background="{StaticResource CardBrush}"
+                CornerRadius="15"
+                Margin="40"
+                BoxShadow="0 8 32 0 #4D000000">
+            <Grid Margin="40">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" HorizontalAlignment="Center">
+                    <TextBlock Text="Panel Przemysłowy" 
+                               FontSize="24" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource Primary800Brush}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="System Zarządzania Taśmami" 
+                               FontSize="12" 
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               HorizontalAlignment="Center"
+                               Margin="0,5,0,0"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2">
+                    <TextBlock Text="Nazwa użytkownika" 
+                               FontSize="13" 
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               Margin="0,0,0,5"/>
+                    <TextBox Name="UsernameTextBox"
+                             Text="{Binding Username}"
+                             Watermark="admin"
+                             Padding="12,10"
+                             FontSize="14"
+                             CornerRadius="5"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="4">
+                    <TextBlock Text="Hasło" 
+                               FontSize="13" 
+                               Foreground="{StaticResource TextPrimaryBrush}"
+                               Margin="0,0,0,5"/>
+                    <TextBox Name="PasswordTextBox"
+                             Text="{Binding Password}"
+                             Watermark="********"
+                             PasswordChar="●"
+                             Padding="12,10"
+                             FontSize="14"
+                             CornerRadius="5"/>
+                </StackPanel>
+
+                <TextBlock Grid.Row="6"
+                           Text="{Binding ErrorMessage}"
+                           Foreground="#D32F2F"
+                           FontSize="12"
+                           HorizontalAlignment="Center"
+                           TextWrapping="Wrap"
+                           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+        <Button Grid.Row="8"
+            Name="LoginButton"
+            Classes="primary"
+            Content="Zaloguj się"
+            Command="{Binding LoginCommand}"
+            HorizontalAlignment="Stretch"
+            IsDefault="True"
+            IsEnabled="{Binding !IsLoading}"/>
+
+                <StackPanel Grid.Row="9" 
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="Domyślne dane logowania:"
+                               FontSize="11"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Login: admin | Hasło: admin123"
+                               FontSize="11"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               HorizontalAlignment="Center"
+                               Margin="0,2,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
